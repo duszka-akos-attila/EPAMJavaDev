@@ -16,6 +16,6 @@ Project for EPAM Java Development course.
 
 First command implemented at 05.09. 00:00.
 
-![First command] (./IMGs/first_command.png)
+![First command] (/IMGs/first_command.png)
 
 ---
