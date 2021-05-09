@@ -23,7 +23,7 @@ public class UserDatabaseInitializer {
 
         if(userProjection.isEmpty()) {
             userDao.save(
-                    new UserProjection(UUID.randomUUID(), "admin", "admin", true)
+                    new UserProjection(UUID.nameUUIDFromBytes("admin".getBytes()), "admin", "admin", true)
             );
         }
     }

@@ -8,7 +8,6 @@ public interface UserRepository {
 
     void createUser(User user);
 
-    ArrayList<User> getAllUsers();
+    User findUserByUserName(String userName) throws Exception;
 
-    User findUserByUserName(String userName);
 }
