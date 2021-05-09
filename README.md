@@ -31,7 +31,7 @@ First command implemented at 05.09. 00:00.
 
 #### Data Structures
 
-##### Movie
+#### Movie
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -40,25 +40,25 @@ First command implemented at 05.09. 00:00.
 | Genre | `String` | `movieGenre` | The genre of the movie. |
 | Length | `int` | `movieLength` | The length of the movie in minutes. |
 
-###### Commands
+#### Commands
 
 | Name | Syntax | Privileged command | Description |
 | -- | -- | -- | -- |
-| Create movie | `create movie <movie title> <genre> <screen time in minutes>` | [x] | If a movie not exists with the given title, creates it with the given parameters. |
-| List movies | `list movies` | [] | Lists all movies from the database. |
-| Update movie | `update movie <movie title> <genre> <screen time in minutes>` | [x] | If a movie exists with the given title, it's genre and screen time is changes with the given parameters. |
-| Delete movie | `delete movie <movie title>` | [x] | If a movie exists with the given title, deletes it. |
+| Create movie | `create movie <movie title> <genre> <screen time in minutes>` | - [x] . | If a movie not exists with the given title, creates it with the given parameters. |
+| List movies | `list movies` | - [] . | Lists all movies from the database. |
+| Update movie | `update movie <movie title> <genre> <screen time in minutes>` | - [x] . | If a movie exists with the given title, it's genre and screen time is changes with the given parameters. |
+| Delete movie | `delete movie <movie title>` | - [x] . | If a movie exists with the given title, deletes it. |
 
-####### Outputs
+#### Outputs
 
 | Command | Requirement(s) | Requirement satisfied | Output |
 | -- | -- | -- | -- |
-| List movies | There is at least one movie in the database | [] | `There are no movies at the moment` |
-| List movies | There is at least one movie in the database | [x] | All the screenings from the database, with the given format: `<movie title> (<genre>, <screen time in minutes> minutes)` |
+| List movies | There is at least one movie in the database | - [] . | `There are no movies at the moment` |
+| List movies | There is at least one movie in the database | - [x] . | All the screenings from the database, with the given format: `<movie title> (<genre>, <screen time in minutes> minutes)` |
 
+---
 
-
-##### Room
+#### Room
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -67,25 +67,25 @@ First command implemented at 05.09. 00:00.
 | Rows | `int` | `seatRows` | Number of seat rows the room has. |
 | Columns | `int` | `seatColumns` | Number of seat columns the room has. |
 
-###### Commands
+#### Commands
 
 | Name | Syntax | Privileged command | Description |
 | -- | -- | -- | -- |
-| Create room | `create room <room name> <number of seat rows> <number of seat columns>` | [x] | If a room not exists with the given name, creates it with the given parameters. |
-| List rooms | `list rooms` | [] | Lists all rooms from the database. |
-| Update room | `update room <room name> <number of seat rows> <number of seat columns>` | [x] | If a room exists with the given name, it's number of seat rows and columns are changes with the given parameters. |
-| Delete room | `delete room <room name>` | [x] | If a room exists with the given name, deletes it. |
+| Create room | `create room <room name> <number of seat rows> <number of seat columns>` | - [x] . | If a room not exists with the given name, creates it with the given parameters. |
+| List rooms | `list rooms` | - [] . | Lists all rooms from the database. |
+| Update room | `update room <room name> <number of seat rows> <number of seat columns>` | - [x] . | If a room exists with the given name, it's number of seat rows and columns are changes with the given parameters. |
+| Delete room | `delete room <room name>` | - [x] . | If a room exists with the given name, deletes it. |
 
-####### Outputs
+#### Outputs
 
 | Command | Requirement(s) | Requirement satisfied | Output |
 | -- | -- | -- | -- |
-| List rooms | There is at least one room in the database | [] | `There are no rooms at the moment` |
-| List rooms | There is at least one room in the database | [x] | All the screenings from the database, with the given format: `Room <room name> with <number of seats> seats, <number of seat rows> rows and <number of seat columns> columns ` |
+| List rooms | There is at least one room in the database | - [] . | `There are no rooms at the moment` |
+| List rooms | There is at least one room in the database | - [x] . | All the screenings from the database, with the given format: `Room <room name> with <number of seats> seats, <number of seat rows> rows and <number of seat columns> columns ` |
 
+---
 
-
-##### Screening
+#### Screening
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -94,26 +94,26 @@ First command implemented at 05.09. 00:00.
 | Room name | `String` | `roomName` | The name of the room the screening takes place. **Identifies the screening in the application.** |
 | Date | `Date` | `screeningTime` | The date and time of the screening. **Identifies the screening in the application.** |
 
-###### Commands
+#### Commands
 
 | Name | Syntax | Privileged command | Description |
 | -- | -- | -- | -- |
-| Create screening | `create screening <movie title> <room name> <screening time, in YYYY-MM-DD hh:mm format>` | [x] | If a screening not exists with the given room name, and the screening time is not *overlapping* creates it with the given parameters. |
-| List screenings | `list screenings` | [] | Lists all screenings from the database. |
-| Delete screening | `delete screening <movie title> <room name> <screening time, in YYYY-MM-DD hh:mm format>` | [x] | If a screening exists with the given parameters, deletes it. |
+| Create screening | `create screening <movie title> <room name> <screening time, in YYYY-MM-DD hh:mm format>` | - [x] . | If a screening not exists with the given room name, and the screening time is not *overlapping* creates it with the given parameters. |
+| List screenings | `list screenings` | - [] . | Lists all screenings from the database. |
+| Delete screening | `delete screening <movie title> <room name> <screening time, in YYYY-MM-DD hh:mm format>` | - [x] . | If a screening exists with the given parameters, deletes it. |
 
-####### Outputs
+#### Outputs
 
 | Command | Requirement(s) | Requirement satisfied | Output |
 | -- | -- | -- | -- |
-| Create screening | There is no screening in the given room when the new screening is starting | [] | `There is an overlapping screening` |
-| Create screening | There was no screening in the given room 10 minutes prior to the new screening is starting | [] | `This would start in the break period after another screening in this room` |
-| List screenings | There is at least one screening in the database  | [] | `There are no screenings` |
-| List screenings | There is at least one screening in the database  | [x] | All the screenings from the database, with the given format: `<movie title> (<genre>, <screening time in minutes> minutes), screened in room <room name>, at <screening time, in YYYY-MM-DD hh:mm format>` |
+| Create screening | There is no screening in the given room when the new screening is starting | - [] . | `There is an overlapping screening` |
+| Create screening | There was no screening in the given room 10 minutes prior to the new screening is starting | - [] . | `This would start in the break period after another screening in this room` |
+| List screenings | There is at least one screening in the database  | - [] . | `There are no screenings` |
+| List screenings | There is at least one screening in the database  | - [x] . | All the screenings from the database, with the given format: `<movie title> (<genre>, <screening time in minutes> minutes), screened in room <room name>, at <screening time, in YYYY-MM-DD hh:mm format>` |
 
+---
 
-
-##### User
+#### User
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -123,20 +123,20 @@ First command implemented at 05.09. 00:00.
 | Administrator role | `boolean` | `isPrivileged` | It stores the privileges of the user. **Grants privileges to the user in the application.** |
 |  |  |  |  |
 
-###### Commands
+#### Commands
 
 | Name | Syntax | Privileged command | Description |
 | -- | -- | -- | -- |
-| Sign in | `sign in privileged <username> <password>` | [x] | If a user with the given username exists, it's a privileged account, and the password is correct the user is signed in. |
-| Sign out | `sign out` | [x] | Signs out the user. |
-| Describe account | `describe account` | [x] | If a privileged user is signed in, it tells the username, and that the account is privileged or not. |
+| Sign in | `sign in privileged <username> <password>` | - [x] . | If a user with the given username exists, it's a privileged account, and the password is correct the user is signed in. |
+| Sign out | `sign out` | - [x] . | Signs out the user. |
+| Describe account | `describe account` | - [x] . | If a privileged user is signed in, it tells the username, and that the account is privileged or not. |
 
-####### Outputs
+#### Outputs
 
 | Command | Requirement(s) | Requirement satisfied | Output |
 | -- | -- | -- | -- |
-| Sign in | Correct credentials | [] | `Login failed due to incorrect credentials` |
-| Describe account | User is signed in | [] | `You are not signed in` |
-| Describe account | User is signed in | [x] | `Signed in with privileged account '<username>'` |
+| Sign in | Correct credentials | - [] . | `Login failed due to incorrect credentials` |
+| Describe account | User is signed in | - [] . | `You are not signed in` |
+| Describe account | User is signed in | - [x] . | `Signed in with privileged account '<username>'` |
 
 ---
