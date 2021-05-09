@@ -28,7 +28,6 @@ First command implemented at 05.09. 00:00.
 ---
 
 ### Structuring the data and functionalities by the requirements
----
 
 ### Movie
 
