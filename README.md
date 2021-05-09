@@ -15,6 +15,7 @@ Project for EPAM Java Development course.
 | 2021.05.09. 02:08 | Repositories | Finished the repositories of Movie, Room, User and Screening without implementation. | 30m |
 | 2021.05.09. 03:18 | Repositories | Finished the projections of Movie, Room, User and Screening. | 70m |
 | 2021.05.09. 05:40 | DAOs | Finished the DAOs for Movie, Room, User and Screening. It might need some fixes later! | 82m |
+| 2021.05.09. 06:00 | Configuration | Preparing for the database connection. | 20m |
 ---
 
 ### Interesting
