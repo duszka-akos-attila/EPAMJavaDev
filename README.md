@@ -29,9 +29,7 @@ First command implemented at 05.09. 00:00.
 
 ### Structuring the data and functionalities by the requirements
 
-#### Data Structures
-
-#### Movie
+### Movie
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -58,7 +56,7 @@ First command implemented at 05.09. 00:00.
 
 ---
 
-#### Room
+### Room
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -85,7 +83,7 @@ First command implemented at 05.09. 00:00.
 
 ---
 
-#### Screening
+### Screening
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
@@ -113,7 +111,7 @@ First command implemented at 05.09. 00:00.
 
 ---
 
-#### User
+### User
 
 | Variable | Type | Name | Description |
 | -- | -- | -- | -- |
