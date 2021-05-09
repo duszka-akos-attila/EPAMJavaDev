@@ -4,6 +4,7 @@ import com.epam.training.ticketservice.dataaccess.dao.UserDao;
 import com.epam.training.ticketservice.dataaccess.projection.UserProjection;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class UserDatabaseInitializer {
         this.userDao = userDao;
     }
 
+    @PostConstruct
     public void initDatabase() {
         Optional<UserProjection> userProjection = userDao.findByUserName("admin");
 

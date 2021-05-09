@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories("com.epam.training.webshop.dataaccess.dao")
-@EntityScan("com.epam.training.webshop.dataaccess.projection")
+@EnableJpaRepositories("com.epam.training.ticketservice.dataaccess.dao")
+@EntityScan("com.epam.training.ticketservice.dataaccess.projection")
 @EnableTransactionManagement
 public class JPAConfiguration {
 }
