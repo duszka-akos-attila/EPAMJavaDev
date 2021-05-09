@@ -13,6 +13,7 @@ Project for EPAM Java Development course.
 | 2021.05.09. 01:00 | CLI | Finished the frame of the CLI. | 1h |
 | 2021.05.09. 01:38 | Domains | Finished the domains of Movie, Room, User and Screening. | 37m |
 | 2021.05.09. 02:08 | Repositories | Finished the repositories of Movie, Room, User and Screening without implementation. | 30m |
+| 2021.05.09. 03:18 | Repositories | Finished the projections of Movie, Room, User and Screening. | 70m |
 ---
 
 ### Interesting
