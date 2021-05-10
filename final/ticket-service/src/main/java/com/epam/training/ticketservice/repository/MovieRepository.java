@@ -10,9 +10,9 @@ public interface MovieRepository {
 
     ArrayList<Movie> getAllMovies();
 
-    Movie findMovieByTitle();
+    Movie findMovieByTitle(String movieTitle) throws Exception;
 
-    void updateMovie(String movieTitle, Movie movie);
+    void updateMovie(Movie movie) throws Exception;
 
     void deleteMovie(String movieTitle);
 

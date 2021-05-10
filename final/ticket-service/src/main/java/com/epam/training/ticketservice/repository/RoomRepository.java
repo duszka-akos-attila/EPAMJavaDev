@@ -10,9 +10,9 @@ public interface RoomRepository {
 
     ArrayList<Room> getAllRooms();
 
-    Room findRoomByRoomName(String roomName);
+    Room findRoomByRoomName(String roomName) throws Exception;
 
-    void updateRoom(String roomName, Room room);
+    void updateRoom(Room room) throws Exception;
 
     void deleteRoom(String roomName);
 }

@@ -17,7 +17,8 @@ public class RoomProjection {
 
     @Id
     @GeneratedValue
-    private long roomId;
+    @Column(name = "id")
+    private Long roomId;
 
     @Column(unique = true)
     private String roomName;

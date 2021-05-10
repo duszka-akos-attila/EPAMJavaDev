@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface RoomDao extends JpaRepository<RoomProjection, Long> {
 
     Optional<RoomProjection> findByRoomName(String roomName);
+
+    void deleteByRoomName(String roomName);
 }

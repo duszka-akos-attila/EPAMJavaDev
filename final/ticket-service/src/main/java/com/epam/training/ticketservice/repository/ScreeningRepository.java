@@ -7,11 +7,11 @@ import java.util.Date;
 
 public interface ScreeningRepository {
 
-    void createScreening(Screening screening);
+    void createScreening(Screening screening) throws Exception;
 
     ArrayList<Screening> getAllScreenings();
 
-    void updateScreening(String roomName, Date screeningTime, Screening screening);
+    void updateScreening(String movieTitle ,String roomName, Date screeningTime, Screening screening) throws Exception;
 
-    void deleteScreening(String roomName, Date screeningTime);
+    void deleteScreening(String movieTitle ,String roomName, Date screeningTime) throws Exception;
 }

@@ -6,9 +6,7 @@ import com.epam.training.ticketservice.domain.User;
 import com.epam.training.ticketservice.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Repository
 public class JpaUserRepository implements UserRepository {
