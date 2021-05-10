@@ -18,10 +18,10 @@ Project for EPAM Java Development course.
 | 2021.05.09. 06:00 | Configuration | Preparing for the database connection. | 20m |
 | 2021.05.09. 23:05 | Bugfix | Fixing some configurations for the database connection. | 30m |
 | 2021.05.10. 01:35 | README documentation | Expanded README documentation. | Do not talk about this one... |
-| 2021.05.10. 03:45 | Repositories | Finished the Repositories for Movie, Room, User and Screening. *@TODO It will definitely need fixes later!* | 82m |
+| 2021.05.10. 03:45 | Repositories | Finished the Repositories for Movie, Room, User and Screening. *@TODO It will definitely need fixes later!* | 3h |
 
-> 2021.05.09. 05:40 | DAOs | Finished the DAOs for Movie, Room, User and Screening. It might need some fixes later! | 82m
-> > Updated the whole **DAO** and **Projection** layer with the latest patch [ 2021.05.10. 03:45 | Repositories ].
+> `2021.05.09. 05:40 | DAOs` > Finished the DAOs for Movie, Room, User and Screening. It might need some fixes later!
+> > Updated the whole **DAO** and **Projection** layer with the latest patch `2021.05.10. 03:45 | Repositories`.
 
 ---
 
