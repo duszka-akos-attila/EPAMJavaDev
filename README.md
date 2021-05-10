@@ -23,6 +23,7 @@ Project for EPAM Java Development course.
 
 > `2021.05.09. 05:40 | DAOs` > Finished the DAOs for Movie, Room, User and Screening. It might need some fixes later!
 > > Updated the whole **DAO** and **Projection** layer with the latest patch `2021.05.10. 03:45 | Repositories`.
+
 > ` 2021.05.10. 03:45 | Repositories` > Finished the Repositories for Movie, Room, User and Screening. *@TODO It will definitely need fixes later!*
 > > Updated the implementation of the Screening feature on all layers with the latest patch `2021.05.10. 05:50 | Services`.
 
