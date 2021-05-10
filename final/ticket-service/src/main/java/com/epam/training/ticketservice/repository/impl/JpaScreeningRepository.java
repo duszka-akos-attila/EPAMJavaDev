@@ -6,6 +6,8 @@ import com.epam.training.ticketservice.dataaccess.dao.ScreeningDao;
 import com.epam.training.ticketservice.dataaccess.projection.MovieProjection;
 import com.epam.training.ticketservice.dataaccess.projection.RoomProjection;
 import com.epam.training.ticketservice.dataaccess.projection.ScreeningProjection;
+import com.epam.training.ticketservice.domain.Movie;
+import com.epam.training.ticketservice.domain.Room;
 import com.epam.training.ticketservice.domain.Screening;
 import com.epam.training.ticketservice.repository.ScreeningRepository;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,6 @@ import java.util.stream.Collectors;
 @Repository
 public class JpaScreeningRepository implements ScreeningRepository {
 
-    //TODO Create a MovieProjection and RoomProjection factory, to get rid of duplications!
 
     private final ScreeningDao screeningDao;
     private final MovieDao movieDao;
@@ -32,16 +33,10 @@ public class JpaScreeningRepository implements ScreeningRepository {
 
     @Override
     public void createScreening(Screening screening) throws Exception {
-        MovieProjection movieProjection = movieDao.findByMovieTitle(screening.getMovieTitle())
-                .orElseThrow(() -> new Exception("Movie not found with \""+ screening.getMovieTitle() +"\" title!"));
-
-        RoomProjection roomProjection = roomDao.findByRoomName(screening.getRoomName())
-                .orElseThrow(() -> new Exception("Room not found with \""+ screening.getRoomName() +"\" name!"));
-
         screeningDao.save(new ScreeningProjection(
-                UUID.nameUUIDFromBytes(screening.getMovieTitle().getBytes()),
-                movieProjection,
-                roomProjection,
+                UUID.nameUUIDFromBytes(screening.getMovie().getMovieTitle().getBytes()),
+                findMovieByTitle(screening.getMovie().getMovieTitle()),
+                findRoomByName(screening.getRoom().getRoomName()),
                 screening.getScreeningTime()));
     }
 
@@ -49,46 +44,45 @@ public class JpaScreeningRepository implements ScreeningRepository {
     public ArrayList<Screening> getAllScreenings() {
         return screeningDao.findAll().stream()
                 .map(screeningProjection -> new Screening(
-                        screeningProjection.getMovieProjection().getMovieTitle(),
-                        screeningProjection.getRoomProjection().getRoomName(),
+                        MovieProjectionToMovie(screeningProjection.getMovieProjection()),
+                        RoomProjectionToRoom(screeningProjection.getRoomProjection()),
                         screeningProjection.getScreeningTime()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
-    public void updateScreening(String movieTitle, String roomName, Date screeningTime, Screening screening) throws Exception {
-        MovieProjection oldMovieProjection = movieDao.findByMovieTitle(movieTitle)
-                .orElseThrow(() -> new Exception("Movie not found with \""+ movieTitle +"\" title!"));
-
-        MovieProjection newMovieProjection = movieDao.findByMovieTitle(screening.getMovieTitle())
-                .orElseThrow(() -> new Exception("Movie not found with \""+ screening.getMovieTitle() +"\" title!"));
-
-        RoomProjection oldRoomProjection = roomDao.findByRoomName(roomName)
-                .orElseThrow(() -> new Exception("Room not found with \""+ roomName +"\" name!"));
-
-        RoomProjection newRoomProjection = roomDao.findByRoomName(screening.getRoomName())
-                .orElseThrow(() -> new Exception("Room not found with \""+ screening.getRoomName() +"\" name!"));
-
-        ScreeningProjection screeningProjection = screeningDao.findByMovieProjectionAndRoomProjectionAndScreeningTime(
-                oldMovieProjection, oldRoomProjection, screeningTime)
-                .orElseThrow(() -> new Exception("Screening not found with the given parameters: Movie: " + movieTitle + ", Room: " + roomName + "Screening at: " + screeningTime));
-
-        screeningDao.delete(screeningProjection);
-        screeningDao.save(new ScreeningProjection(
-                UUID.nameUUIDFromBytes(screening.getMovieTitle().getBytes()),
-                newMovieProjection,
-                newRoomProjection,
-                screening.getScreeningTime()));
+    public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
+        screeningDao.deleteByMovieProjectionAndRoomProjectionAndScreeningTime(
+                findMovieByTitle(movieTitle), findRoomByName(roomName), screeningTime);
     }
 
-    @Override
-    public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        MovieProjection movieProjection = movieDao.findByMovieTitle(movieTitle)
+    /*
+        Assistance Methods below
+    */
+
+    private Movie MovieProjectionToMovie(MovieProjection movieProjection) {
+        return new Movie(
+                movieProjection.getMovieTitle(),
+                movieProjection.getMovieGenre(),
+                movieProjection.getMovieLength()
+        );
+    }
+
+    private Room RoomProjectionToRoom(RoomProjection roomProjection) {
+        return new Room(
+                roomProjection.getRoomName(),
+                roomProjection.getSeatRows(),
+                roomProjection.getSeatColumns()
+        );
+    }
+
+    private MovieProjection findMovieByTitle(String movieTitle) throws Exception {
+        return movieDao.findByMovieTitle(movieTitle)
                 .orElseThrow(() -> new Exception("Movie not found with \""+ movieTitle +"\" title!"));
+    }
 
-        RoomProjection roomProjection = roomDao.findByRoomName(roomName)
+    private RoomProjection findRoomByName(String roomName) throws Exception {
+        return roomDao.findByRoomName(roomName)
                 .orElseThrow(() -> new Exception("Room not found with \""+ roomName +"\" name!"));
-
-        screeningDao.deleteByMovieProjectionAndRoomProjectionAndScreeningTime(movieProjection, roomProjection, screeningTime);
     }
 }

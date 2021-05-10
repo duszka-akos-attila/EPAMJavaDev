@@ -15,8 +15,8 @@ public class Movie {
 
     @Override
     public String toString() {
-        return  movieTitle + " - "
-                + movieGenre.toUpperCase() + ", "
-                + movieLength + "m";
+        return  movieTitle + " ("
+                + movieGenre.toLowerCase() + ", "
+                + movieLength + " minutes)";
     }
 }

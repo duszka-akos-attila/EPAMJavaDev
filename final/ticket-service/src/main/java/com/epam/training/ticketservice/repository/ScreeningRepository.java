@@ -11,7 +11,5 @@ public interface ScreeningRepository {
 
     ArrayList<Screening> getAllScreenings();
 
-    void updateScreening(String movieTitle ,String roomName, Date screeningTime, Screening screening) throws Exception;
-
     void deleteScreening(String movieTitle ,String roomName, Date screeningTime) throws Exception;
 }
