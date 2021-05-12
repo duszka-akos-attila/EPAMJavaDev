@@ -33,18 +33,16 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
                 break;
 
             case -1:
-                result = "Incorrect Username!";
-                break;
 
             case -2:
-                result = "Incorrect Password!";
+                result = "Login failed due to incorrect credentials";
                 break;
 
             case -3:
                 result = "User is already signed in!";
                 break;
         }
-        return "Sign "+ privilegedUserName +"!";
+        return "Signed in with privileged account '"+ privilegedUserName +"'";
     }
 
     @ShellMethod(value = "Signing out from an account", key = "sign out")
@@ -63,6 +61,6 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
             return "Signed in with privileged account '" + userName + "'";
         }
 
-        return "You are not signed in!";
+        return "You are not signed in";
     }
 }

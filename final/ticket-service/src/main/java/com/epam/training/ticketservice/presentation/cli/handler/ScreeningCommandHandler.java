@@ -1,37 +1,66 @@
 package com.epam.training.ticketservice.presentation.cli.handler;
 
+import com.epam.training.ticketservice.domain.Screening;
+import com.epam.training.ticketservice.security.command.PrivilegedCommand;
+import com.epam.training.ticketservice.security.session.SessionManager;
+import com.epam.training.ticketservice.security.session.TokenCollector;
+import com.epam.training.ticketservice.service.ScreeningService;
+import com.epam.training.ticketservice.utilities.converter.DateConverter;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 @ShellComponent
-public class ScreeningCommandHandler {
+public class ScreeningCommandHandler extends PrivilegedCommand {
+
+    private final ScreeningService screeningService;
+    private final DateConverter dateConverter;
+
+    public ScreeningCommandHandler(SessionManager sessionManager, TokenCollector tokenCollector, ScreeningService screeningService, DateConverter dateConverter) {
+        super(sessionManager, tokenCollector);
+        this.screeningService = screeningService;
+        this.dateConverter = dateConverter;
+    }
 
     @ShellMethod(value = "Creates a new screening", key = "create screening")
+    @ShellMethodAvailability("isUserPrivileged")
     public String createScreening(String movieTitle, String roomName, Date screeningTime){
+        try {
+            screeningService.createScreening(movieTitle, roomName, screeningTime);
+        }
+        catch (Exception e) {
+            return e.toString();
+        }
         return "Created a new screening for: \""+ movieTitle +"\" at \""+ roomName +"\"!";
     }
 
     @ShellMethod(value = "Lists all screenings", key = "list screenings")
-    public ArrayList<String> listScreenings(){
-        ArrayList<String> screenings = new ArrayList<>();
-
+    public String listScreenings(){
+        StringBuilder screeningList = new StringBuilder();
+        ArrayList<Screening> screenings = screeningService.getAllScreenings();
         if(screenings.isEmpty()) {
-            System.out.println("There are no screenings at the moment!");
+            return "There are no screenings at the moment";
         }
-
-        return screenings;
-    }
-
-    @ShellMethod(value = "Updates an existing screening", key = "update screening")
-    public String updateScreening(String movieTitle, String roomName, Date screeningTime){
-        return "Updated the screening: \""+ movieTitle +"\" at \""+ roomName +"\"!";
+        else {
+            for (Screening screening : screenings) {
+                screeningList.append(screening.toString()).append("\n");
+            }
+        }
+        return screeningList.toString();
     }
 
     @ShellMethod(value = "Deletes an existing screening", key = "delete screening")
-    public String deleteScreening(String movieTitle, String roomName){
+    @ShellMethodAvailability("isUserPrivileged")
+    public String deleteScreening(String movieTitle, String roomName, String screeningTime){
+        try {
+            screeningService.deleteScreening(movieTitle,roomName,dateConverter.ConvertStringToDate(screeningTime));
+        }
+        catch (Exception e){
+            return e.toString();
+        }
         return "Deleted the the screening: \""+ movieTitle +"\" at \""+ roomName +"\"!";
     }
 }

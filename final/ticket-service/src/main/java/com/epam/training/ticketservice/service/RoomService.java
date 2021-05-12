@@ -20,16 +20,8 @@ public class RoomService {
         ));
     }
 
-    public void listRooms() {
-        ArrayList<Room> rooms = roomRepository.getAllRooms();
-        if(rooms.isEmpty()) {
-            System.out.println("There are no rooms at the moment");
-        }
-        else {
-            for (Room room : rooms) {
-                System.out.println(room.toString());
-            }
-        }
+    public ArrayList<Room> getAllRooms() {
+        return roomRepository.getAllRooms();
     }
 
     public void updateRoom(String roomName, int seatRows, int seatColumns) throws Exception {

@@ -21,6 +21,7 @@ Project for EPAM Java Development course.
 | 2021.05.10. 03:45 | Repositories | Finished the Repositories for Movie, Room, User and Screening. *@TODO It will definitely need fixes later!* | 3h |
 | 2021.05.10. 05:50 | Services | Finished the Services for Movie, Room, User and Screening. Modified some domains and updated the Screening feature. | 2h |
 | 2021.05.12. 04:00 | Authentication | Finished the authentication feature. | 12h |
+    | 2021.05.12. 04:45 | CLI Handler | Finished the CLI Handlers. *@TODO There were not much testing, so should test the whole project!*| 45m |
 
 > `2021.05.09. 05:40 | DAOs` > Finished the DAOs for Movie, Room, User and Screening. It might need some fixes later!
 > > Updated the whole **DAO** and **Projection** layer with the latest patch `2021.05.10. 03:45 | Repositories`.

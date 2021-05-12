@@ -29,16 +29,8 @@ public class ScreeningService {
         ));
     }
 
-    public void listScreenings() {
-        ArrayList<Screening> screenings = screeningRepository.getAllScreenings();
-        if(screenings.isEmpty()) {
-            System.out.println("There are no screenings at the moment");
-        }
-        else {
-            for (Screening screening : screenings) {
-                System.out.println(screening.toString());
-            }
-        }
+    public ArrayList<Screening> getAllScreenings() {
+        return screeningRepository.getAllScreenings();
     }
 
     public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {

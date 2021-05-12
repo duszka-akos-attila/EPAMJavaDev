@@ -20,16 +20,8 @@ public class MovieService {
         ));
     }
 
-    public void listMovies() {
-        ArrayList<Movie> movies = movieRepository.getAllMovies();
-        if(movies.isEmpty()) {
-            System.out.println("There are no movies at the moment");
-        }
-        else {
-            for (Movie movie : movies) {
-                System.out.println(movie.toString());
-            }
-        }
+    public ArrayList<Movie> getAllMovies() {
+        return movieRepository.getAllMovies();
     }
 
     public void updateMovie(String movieTitle, String movieGenre, int movieLength) throws Exception {

@@ -1,36 +1,65 @@
 package com.epam.training.ticketservice.presentation.cli.handler;
 
+import com.epam.training.ticketservice.domain.Room;
+import com.epam.training.ticketservice.security.command.PrivilegedCommand;
+import com.epam.training.ticketservice.security.session.SessionManager;
+import com.epam.training.ticketservice.security.session.TokenCollector;
+import com.epam.training.ticketservice.service.RoomService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 
 import java.util.ArrayList;
 
 @ShellComponent
-public class RoomCommandHandler {
+public class RoomCommandHandler extends PrivilegedCommand {
+
+    private final RoomService roomService;
+
+    public RoomCommandHandler(SessionManager sessionManager, TokenCollector tokenCollector, RoomService roomService) {
+        super(sessionManager, tokenCollector);
+        this.roomService = roomService;
+    }
 
     @ShellMethod(value = "Creates a new room", key = "create room")
+    @ShellMethodAvailability("isUserPrivileged")
     public String createRoom(String roomName, int seatRows, int seatColumns){
+        roomService.createRoom(roomName,seatRows,seatColumns);
         return "Created a new room: \""+ roomName +"\"!";
     }
 
     @ShellMethod(value = "Lists all rooms", key = "list rooms")
-    public ArrayList<String> listRooms(){
-        ArrayList<String> rooms = new ArrayList<>();
-
+    public String listRooms(){
+        StringBuilder roomList = new StringBuilder();
+        ArrayList<Room> rooms = roomService.getAllRooms();
         if(rooms.isEmpty()) {
-            System.out.println("There are no rooms at the moment!");
+            return "There are no rooms at the moment";
         }
-
-        return rooms;
+        else {
+            for (Room room : rooms) {
+                roomList.append(room.toString()).append("\n");
+            }
+        }
+        return roomList.toString();
     }
 
     @ShellMethod(value = "Updates an existing room", key = "update room")
+    @ShellMethodAvailability("isUserPrivileged")
     public String updateRoom(String roomName, int seatRows, int seatColumns){
+        try {
+            roomService.updateRoom(roomName, seatRows, seatColumns);
+        }
+        catch (Exception e){
+            return "Room '" + roomName + "' not found!";
+        }
         return "Updated the room: \""+ roomName +"\"!";
     }
 
     @ShellMethod(value = "Deletes an existing room", key = "delete room")
+    @ShellMethodAvailability("isUserPrivileged")
     public String deleteRoom(String roomName){
+            roomService.deleteRoom(roomName);
+
         return "Deleted the room: \""+ roomName +"\"!";
     }
 }
