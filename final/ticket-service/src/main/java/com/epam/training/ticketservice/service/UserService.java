@@ -1,11 +1,8 @@
 package com.epam.training.ticketservice.service;
 
-import com.epam.training.ticketservice.domain.Movie;
 import com.epam.training.ticketservice.domain.User;
 import com.epam.training.ticketservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class UserService {
