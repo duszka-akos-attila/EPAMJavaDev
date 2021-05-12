@@ -27,12 +27,12 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Creates a new screening", key = "create screening")
     @ShellMethodAvailability("isUserPrivileged")
-    public String createScreening(String movieTitle, String roomName, Date screeningTime){
+    public String createScreening(String movieTitle, String roomName, String screeningTime){
         try {
-            screeningService.createScreening(movieTitle, roomName, screeningTime);
+            screeningService.createScreening(movieTitle, roomName, dateConverter.ConvertStringToDate(screeningTime));
         }
         catch (Exception e) {
-            return e.toString();
+            return e.getMessage();
         }
         return "Created a new screening for: \""+ movieTitle +"\" at \""+ roomName +"\"!";
     }
@@ -59,7 +59,7 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
             screeningService.deleteScreening(movieTitle,roomName,dateConverter.ConvertStringToDate(screeningTime));
         }
         catch (Exception e){
-            return e.toString();
+            return e.getMessage();
         }
         return "Deleted the the screening: \""+ movieTitle +"\" at \""+ roomName +"\"!";
     }

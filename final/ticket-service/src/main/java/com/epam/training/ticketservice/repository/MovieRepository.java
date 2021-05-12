@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public interface MovieRepository {
 
-    void createMovie(Movie movie);
+    void createMovie(Movie movie) throws Exception;
 
     ArrayList<Movie> getAllMovies();
 
-    Movie findMovieByTitle(String movieTitle) throws Exception;
+    Movie findMovieByMovieTitle(String movieTitle) throws Exception;
 
-    void updateMovie(Movie movie) throws Exception;
+    void updateMovieByMovie(Movie movie) throws Exception;
 
-    void deleteMovie(String movieTitle);
+    void deleteMovieByMovieTitle(String movieTitle) throws Exception;
 
 }

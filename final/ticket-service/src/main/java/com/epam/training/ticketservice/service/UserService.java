@@ -12,7 +12,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createUser(String userName, String userPassword, boolean isPrivileged) {
+    public void createUser(String userName, String userPassword, boolean isPrivileged) throws Exception {
         userRepository.createUser(new User(
                 userName, userPassword, isPrivileged
         ));

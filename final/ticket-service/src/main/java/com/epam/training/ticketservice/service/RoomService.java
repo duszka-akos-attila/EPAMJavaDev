@@ -14,7 +14,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public void createRoom(String roomName, int seatRows, int seatColumns) {
+    public void createRoom(String roomName, int seatRows, int seatColumns) throws Exception {
         roomRepository.createRoom(new Room(
                 roomName, seatRows, seatColumns
         ));
@@ -25,12 +25,12 @@ public class RoomService {
     }
 
     public void updateRoom(String roomName, int seatRows, int seatColumns) throws Exception {
-        roomRepository.updateRoom(new Room(
+        roomRepository.updateRoomByRoom(new Room(
                 roomName, seatRows, seatColumns
         ));
     }
 
-    public void deleteRoom(String roomName) {
-        roomRepository.deleteRoom(roomName);
+    public void deleteRoom(String roomName) throws Exception {
+        roomRepository.deleteRoomByRoomName(roomName);
     }
 }

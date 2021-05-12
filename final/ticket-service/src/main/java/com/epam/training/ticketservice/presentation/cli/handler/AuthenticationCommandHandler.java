@@ -29,7 +29,7 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
         String result = null;
         switch (authenticationService.signIn(privilegedUserName, privilegedUserPassword)) {
             case 0:
-                result = "Welcome "+ privilegedUserName +"!";
+                result = "Signed in with privileged account '"+ privilegedUserName +"'";
                 break;
 
             case -1:
@@ -42,7 +42,7 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
                 result = "User is already signed in!";
                 break;
         }
-        return "Signed in with privileged account '"+ privilegedUserName +"'";
+        return result;
     }
 
     @ShellMethod(value = "Signing out from an account", key = "sign out")

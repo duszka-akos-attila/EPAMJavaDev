@@ -23,8 +23,12 @@ public class RoomCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Creates a new room", key = "create room")
     @ShellMethodAvailability("isUserPrivileged")
-    public String createRoom(String roomName, int seatRows, int seatColumns){
-        roomService.createRoom(roomName,seatRows,seatColumns);
+    public String createRoom(String roomName, int seatRows, int seatColumns) {
+        try {
+            roomService.createRoom(roomName,seatRows,seatColumns);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
         return "Created a new room: \""+ roomName +"\"!";
     }
 
@@ -57,8 +61,12 @@ public class RoomCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Deletes an existing room", key = "delete room")
     @ShellMethodAvailability("isUserPrivileged")
-    public String deleteRoom(String roomName){
+    public String deleteRoom(String roomName) {
+        try {
             roomService.deleteRoom(roomName);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
 
         return "Deleted the room: \""+ roomName +"\"!";
     }

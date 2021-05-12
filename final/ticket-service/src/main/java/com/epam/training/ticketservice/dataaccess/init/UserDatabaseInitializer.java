@@ -22,9 +22,7 @@ public class UserDatabaseInitializer {
 
     @PostConstruct
     public void initDatabase() {
-        Optional<UserProjection> userProjection = userDao.findByUserName("admin");
-
-        if(userProjection.isEmpty()) {
+        if(userDao.findByUserName("admin").isEmpty()) {
             userDao.save(
                     new UserProjection(UUID.nameUUIDFromBytes("admin".getBytes()), "admin", passwordEncoder.encode("admin"), true)
             );

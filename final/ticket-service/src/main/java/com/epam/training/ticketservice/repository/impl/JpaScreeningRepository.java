@@ -12,6 +12,7 @@ import com.epam.training.ticketservice.domain.Screening;
 import com.epam.training.ticketservice.repository.ScreeningRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -32,12 +33,29 @@ public class JpaScreeningRepository implements ScreeningRepository {
     }
 
     @Override
-    public void createScreening(Screening screening) throws Exception {
-        screeningDao.save(new ScreeningProjection(
-                UUID.nameUUIDFromBytes(screening.getMovie().getMovieTitle().getBytes()),
-                findMovieByTitle(screening.getMovie().getMovieTitle()),
-                findRoomByName(screening.getRoom().getRoomName()),
-                screening.getScreeningTime()));
+    public void createScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
+        MovieProjection movieProjection = movieDao.findByMovieTitle(movieTitle).orElseThrow(
+                        () -> new Exception("Movie not found with '"+ movieTitle +"' title!"));
+
+        RoomProjection roomProjection = roomDao.findByRoomName(roomName).orElseThrow(
+                () -> new Exception("Room not found with \""+ roomName +"\" name!"));
+
+        if(screeningDao.findByMovieProjectionAndRoomProjectionAndScreeningTime(
+                movieProjection,
+                roomProjection,
+                screeningTime).isEmpty()) {
+            System.out.println("Screening not found, creating...");
+            screeningDao.save(new ScreeningProjection(
+                    UUID.nameUUIDFromBytes(movieProjection.getMovieTitle().getBytes()),
+                    movieProjection,
+                    roomProjection,
+                    screeningTime
+            ));
+            System.out.println("Creation done!");
+        }
+        else {
+            throw new Exception("Screening with the given parameters is already exists!");
+        }
     }
 
     @Override
@@ -51,9 +69,16 @@ public class JpaScreeningRepository implements ScreeningRepository {
     }
 
     @Override
-    public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        screeningDao.deleteByMovieProjectionAndRoomProjectionAndScreeningTime(
-                findMovieByTitle(movieTitle), findRoomByName(roomName), screeningTime);
+    @Transactional
+    public void deleteScreeningByMovieTitleAndRoomNameAndScreeningTime(String movieTitle, String roomName, Date screeningTime) throws Exception {
+        if(screeningDao.findByMovieProjectionAndRoomProjectionAndScreeningTime(
+                findMovieByTitle(movieTitle), findRoomByName(roomName), screeningTime).isEmpty()) {
+            throw new Exception("Screening not found with the given parameters!");
+        }
+        else {
+            screeningDao.deleteByMovieProjectionAndRoomProjectionAndScreeningTime(
+                    findMovieByTitle(movieTitle), findRoomByName(roomName), screeningTime);
+        }
     }
 
     /*

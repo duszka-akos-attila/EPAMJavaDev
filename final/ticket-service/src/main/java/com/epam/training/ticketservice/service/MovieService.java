@@ -14,7 +14,7 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    public void createMovie(String movieTitle, String movieGenre, int movieLength){
+    public void createMovie(String movieTitle, String movieGenre, int movieLength) throws Exception {
         movieRepository.createMovie(new Movie(
                 movieTitle, movieGenre, movieLength
         ));
@@ -25,13 +25,13 @@ public class MovieService {
     }
 
     public void updateMovie(String movieTitle, String movieGenre, int movieLength) throws Exception {
-        movieRepository.updateMovie(new Movie(
+        movieRepository.updateMovieByMovie(new Movie(
                 movieTitle, movieGenre, movieLength
         ));
     }
 
-    public void deleteMovie(String movieTitle){
-        movieRepository.deleteMovie(movieTitle);
+    public void deleteMovie(String movieTitle) throws Exception {
+        movieRepository.deleteMovieByMovieTitle(movieTitle);
     }
 
 }

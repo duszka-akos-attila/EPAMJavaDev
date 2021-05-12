@@ -29,12 +29,17 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public void createUser(User user) {
-        userDao.save(new UserProjection(
-                UUID.nameUUIDFromBytes(user.getUserName().getBytes()),
-                user.getUserName(),
-                user.getUserPassword(),
-                user.isPrivileged()
-        ));
+    public void createUser(User user) throws Exception {
+        if (userDao.findByUserName(user.getUserName()).isEmpty()) {
+            userDao.save(new UserProjection(
+                    UUID.nameUUIDFromBytes(user.getUserName().getBytes()),
+                    user.getUserName(),
+                    user.getUserPassword(),
+                    user.isPrivileged()
+            ));
+        }
+        else {
+            throw new Exception("Username '" + user.getUserName() + "' is taken already!");
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.epam.training.ticketservice.domain.Room;
 import com.epam.training.ticketservice.repository.RoomRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -19,13 +20,19 @@ public class JpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public void createRoom(Room room) {
-        roomDao.save(new RoomProjection(
-                null,
-                room.getRoomName(),
-                room.getSeatRows(),
-                room.getSeatColumns()
-        ));
+    public void createRoom(Room room) throws Exception {
+        if (roomDao.findByRoomName(room.getRoomName()).isEmpty())
+        {
+            roomDao.save(new RoomProjection(
+                    null,
+                    room.getRoomName(),
+                    room.getSeatRows(),
+                    room.getSeatColumns()
+            ));
+        }
+        else {
+            throw new Exception("Room with title '" + room.getRoomName() + "' is already exists!");
+        }
     }
 
     @Override
@@ -41,7 +48,7 @@ public class JpaRoomRepository implements RoomRepository {
     @Override
     public Room findRoomByRoomName(String roomName) throws Exception {
         RoomProjection roomProjection = roomDao.findByRoomName(roomName).orElseThrow(
-                () -> new Exception("Room not found with \""+ roomName +"\" name!")
+                () -> new Exception("Room not found with '"+ roomName +"' name!")
         );
         return new Room(
                 roomProjection.getRoomName(),
@@ -50,7 +57,7 @@ public class JpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public void updateRoom(Room room) throws Exception {
+    public void updateRoomByRoom(Room room) throws Exception {
         RoomProjection roomProjection = roomDao.findByRoomName(room.getRoomName()).orElseThrow(
                 () -> new Exception("Room not found with \""+ room.getRoomName() +"\" name!")
         );
@@ -61,7 +68,13 @@ public class JpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public void deleteRoom(String roomName) {
-        roomDao.deleteByRoomName(roomName);
+    @Transactional
+    public void deleteRoomByRoomName(String roomName) throws Exception {
+        if (roomDao.findByRoomName(roomName).isEmpty()){
+            throw new Exception("Room not found with '"+ roomName +"' name!");
+        }
+        else {
+            roomDao.deleteByRoomName(roomName);
+        }
     }
 }

@@ -22,11 +22,8 @@ public class ScreeningService {
     }
 
     public void createScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        screeningRepository.createScreening(new Screening(
-                movieRepository.findMovieByTitle(movieTitle),
-                roomRepository.findRoomByRoomName(roomName),
-                screeningTime
-        ));
+        screeningRepository.createScreening(
+                movieTitle, roomName, screeningTime);
     }
 
     public ArrayList<Screening> getAllScreenings() {
@@ -34,6 +31,6 @@ public class ScreeningService {
     }
 
     public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        screeningRepository.deleteScreening(movieTitle, roomName, screeningTime);
+        screeningRepository.deleteScreeningByMovieTitleAndRoomNameAndScreeningTime(movieTitle, roomName, screeningTime);
     }
 }

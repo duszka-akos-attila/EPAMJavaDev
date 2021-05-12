@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public interface RoomRepository {
 
-    void createRoom(Room room);
+    void createRoom(Room room) throws Exception;
 
     ArrayList<Room> getAllRooms();
 
     Room findRoomByRoomName(String roomName) throws Exception;
 
-    void updateRoom(Room room) throws Exception;
+    void updateRoomByRoom(Room room) throws Exception;
 
-    void deleteRoom(String roomName);
+    void deleteRoomByRoomName(String roomName) throws Exception;
 }

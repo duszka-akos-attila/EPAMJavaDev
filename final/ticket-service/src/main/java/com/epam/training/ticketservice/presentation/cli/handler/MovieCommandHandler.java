@@ -23,8 +23,12 @@ public class MovieCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Creates a new movie", key = "create movie")
     @ShellMethodAvailability("isUserPrivileged")
-    public String createMovie(String movieTitle, String movieGenre, int movieLength){
-        movieService.createMovie(movieTitle,movieGenre,movieLength);
+    public String createMovie(String movieTitle, String movieGenre, int movieLength) {
+        try {
+            movieService.createMovie(movieTitle,movieGenre,movieLength);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
         return "Movie " + movieTitle + " is successfully created!";
     }
 
@@ -50,15 +54,19 @@ public class MovieCommandHandler extends PrivilegedCommand {
             movieService.updateMovie(movieTitle,movieGenre,movieLength);
         }
         catch (Exception e){
-            return "Movie '" + movieTitle + "' not found!";
+            return e.getMessage();
         }
         return "Updated the movie: \""+ movieTitle +"\"!";
     }
 
     @ShellMethod(value = "Deletes an existing movie", key = "delete movie")
     @ShellMethodAvailability("isUserPrivileged")
-    public String deleteMovie(String movieTitle){
-        movieService.deleteMovie(movieTitle);
+    public String deleteMovie(String movieTitle) {
+        try {
+            movieService.deleteMovie(movieTitle);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
         return "Deleted the movie: \""+ movieTitle +"\"!";
     }
 }
