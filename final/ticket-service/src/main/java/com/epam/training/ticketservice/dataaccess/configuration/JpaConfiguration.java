@@ -9,5 +9,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories("com.epam.training.ticketservice.dataaccess.dao")
 @EntityScan("com.epam.training.ticketservice.dataaccess.projection")
 @EnableTransactionManagement
-public class JPAConfiguration {
+public class JpaConfiguration {
 }

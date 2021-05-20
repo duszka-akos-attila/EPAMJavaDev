@@ -1,7 +1,5 @@
 package com.epam.training.ticketservice.repository;
 
-import com.epam.training.ticketservice.dataaccess.projection.MovieProjection;
-import com.epam.training.ticketservice.dataaccess.projection.RoomProjection;
 import com.epam.training.ticketservice.domain.Screening;
 
 import java.util.ArrayList;
@@ -13,5 +11,5 @@ public interface ScreeningRepository {
 
     ArrayList<Screening> getAllScreenings();
 
-    void deleteScreeningByMovieTitleAndRoomNameAndScreeningTime(String movieTitle, String roomName, Date screeningTime) throws Exception;
+    void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception;
 }

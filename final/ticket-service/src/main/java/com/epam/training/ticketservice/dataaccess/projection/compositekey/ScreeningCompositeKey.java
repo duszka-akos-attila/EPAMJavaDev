@@ -1,4 +1,4 @@
-package com.epam.training.ticketservice.dataaccess.projection.compositeKey;
+package com.epam.training.ticketservice.dataaccess.projection.compositekey;
 
 import com.epam.training.ticketservice.dataaccess.projection.MovieProjection;
 import com.epam.training.ticketservice.dataaccess.projection.RoomProjection;

@@ -15,16 +15,17 @@ public class UserDatabaseInitializer {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDatabaseInitializer(UserDao userDao, PasswordEncoder passwordEncoder){
+    public UserDatabaseInitializer(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
     public void initDatabase() {
-        if(userDao.findByUserName("admin").isEmpty()) {
+        if (userDao.findByUserName("admin").isEmpty()) {
             userDao.save(
-                    new UserProjection(UUID.nameUUIDFromBytes("admin".getBytes()), "admin", passwordEncoder.encode("admin"), true)
+                    new UserProjection(
+                            UUID.nameUUIDFromBytes("admin".getBytes()), "admin", passwordEncoder.encode("admin"), true)
             );
         }
     }

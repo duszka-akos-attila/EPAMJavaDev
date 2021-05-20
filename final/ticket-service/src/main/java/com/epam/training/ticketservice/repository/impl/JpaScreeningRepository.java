@@ -6,16 +6,18 @@ import com.epam.training.ticketservice.dataaccess.dao.ScreeningDao;
 import com.epam.training.ticketservice.dataaccess.projection.MovieProjection;
 import com.epam.training.ticketservice.dataaccess.projection.RoomProjection;
 import com.epam.training.ticketservice.dataaccess.projection.ScreeningProjection;
+import com.epam.training.ticketservice.dataaccess.projection.compositekey.ScreeningCompositeKey;
 import com.epam.training.ticketservice.domain.Movie;
 import com.epam.training.ticketservice.domain.Room;
 import com.epam.training.ticketservice.domain.Screening;
+import com.epam.training.ticketservice.repository.MovieRepository;
+import com.epam.training.ticketservice.repository.RoomRepository;
 import com.epam.training.ticketservice.repository.ScreeningRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -25,11 +27,15 @@ public class JpaScreeningRepository implements ScreeningRepository {
     private final ScreeningDao screeningDao;
     private final MovieDao movieDao;
     private final RoomDao roomDao;
+    private final MovieRepository movieRepository;
+    private final RoomRepository roomRepository;
 
-    public JpaScreeningRepository(ScreeningDao screeningDao, MovieDao movieDao, RoomDao roomDao) {
+    public JpaScreeningRepository(ScreeningDao screeningDao, MovieDao movieDao, RoomDao roomDao, MovieRepository movieRepository, RoomRepository roomRepository) {
         this.screeningDao = screeningDao;
         this.movieDao = movieDao;
         this.roomDao = roomDao;
+        this.movieRepository = movieRepository;
+        this.roomRepository = roomRepository;
     }
 
     @Override
@@ -40,17 +46,15 @@ public class JpaScreeningRepository implements ScreeningRepository {
         RoomProjection roomProjection = roomDao.findByRoomName(roomName).orElseThrow(
                 () -> new Exception("Room not found with \""+ roomName +"\" name!"));
 
-        if(screeningDao.findByMovieProjectionAndRoomProjectionAndScreeningTime(
-                movieProjection,
-                roomProjection,
+        if(screeningDao.findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+                movieTitle,
+                roomName,
                 screeningTime).isEmpty()) {
             System.out.println("Screening not found, creating...");
             screeningDao.save(new ScreeningProjection(
-                    UUID.nameUUIDFromBytes(movieProjection.getMovieTitle().getBytes()),
-                    movieProjection,
-                    roomProjection,
-                    screeningTime
-            ));
+                    new ScreeningCompositeKey(
+                    movieProjection, roomProjection, screeningTime
+                    )));
             System.out.println("Creation done!");
         }
         else {
@@ -62,22 +66,22 @@ public class JpaScreeningRepository implements ScreeningRepository {
     public ArrayList<Screening> getAllScreenings() {
         return screeningDao.findAll().stream()
                 .map(screeningProjection -> new Screening(
-                        MovieProjectionToMovie(screeningProjection.getMovieProjection()),
-                        RoomProjectionToRoom(screeningProjection.getRoomProjection()),
-                        screeningProjection.getScreeningTime()))
+                        MovieProjectionToMovie(screeningProjection.getScreeningCompositeKey().getMovieProjection()),
+                        RoomProjectionToRoom(screeningProjection.getScreeningCompositeKey().getRoomProjection()),
+                        screeningProjection.getScreeningCompositeKey().getScreeningTime()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
     @Transactional
-    public void deleteScreeningByMovieTitleAndRoomNameAndScreeningTime(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        if(screeningDao.findByMovieProjectionAndRoomProjectionAndScreeningTime(
-                findMovieByTitle(movieTitle), findRoomByName(roomName), screeningTime).isEmpty()) {
+    public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
+        if(screeningDao.findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+                movieTitle, roomName, screeningTime).isEmpty()) {
             throw new Exception("Screening not found with the given parameters!");
         }
         else {
-            screeningDao.deleteByMovieProjectionAndRoomProjectionAndScreeningTime(
-                    findMovieByTitle(movieTitle), findRoomByName(roomName), screeningTime);
+            screeningDao.deleteByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+                    movieTitle, roomName, screeningTime);
         }
     }
 

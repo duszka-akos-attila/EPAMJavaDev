@@ -15,7 +15,7 @@ public class User {
 
     @Override
     public String toString() {
-        if(isPrivileged){
+        if (isPrivileged) {
             return  userName + ", privileged";
         }
 

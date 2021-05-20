@@ -31,6 +31,6 @@ public class ScreeningService {
     }
 
     public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        screeningRepository.deleteScreeningByMovieTitleAndRoomNameAndScreeningTime(movieTitle, roomName, screeningTime);
+        screeningRepository.deleteScreening(movieTitle, roomName, screeningTime);
     }
 }
