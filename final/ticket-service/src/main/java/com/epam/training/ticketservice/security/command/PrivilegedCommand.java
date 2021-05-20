@@ -22,7 +22,7 @@ public abstract class PrivilegedCommand extends SecuredCommand {
 
     public Availability isUserPrivileged() {
         ArrayList<UUID> tokens = tokenCollector.getTokens();
-        if(tokens.size()>0) {
+        if (tokens.size() > 0) {
             if (sessionManager.isPrivilegedSession(tokens.get(tokens.size() - 1))) {
                 return Availability.available();
             }

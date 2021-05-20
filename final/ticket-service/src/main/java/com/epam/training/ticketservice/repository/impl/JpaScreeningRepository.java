@@ -30,7 +30,13 @@ public class JpaScreeningRepository implements ScreeningRepository {
     private final MovieRepository movieRepository;
     private final RoomRepository roomRepository;
 
-    public JpaScreeningRepository(ScreeningDao screeningDao, MovieDao movieDao, RoomDao roomDao, MovieRepository movieRepository, RoomRepository roomRepository) {
+    public JpaScreeningRepository(
+            ScreeningDao screeningDao,
+            MovieDao movieDao,
+            RoomDao roomDao,
+            MovieRepository movieRepository,
+            RoomRepository roomRepository) {
+
         this.screeningDao = screeningDao;
         this.movieDao = movieDao;
         this.roomDao = roomDao;
@@ -41,12 +47,12 @@ public class JpaScreeningRepository implements ScreeningRepository {
     @Override
     public void createScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
         MovieProjection movieProjection = movieDao.findByMovieTitle(movieTitle).orElseThrow(
-                        () -> new Exception("Movie not found with '"+ movieTitle +"' title!"));
+            () -> new Exception("Movie not found with '" + movieTitle + "' title!"));
 
         RoomProjection roomProjection = roomDao.findByRoomName(roomName).orElseThrow(
-                () -> new Exception("Room not found with \""+ roomName +"\" name!"));
+            () -> new Exception("Room not found with \"" + roomName + "\" name!"));
 
-        if(screeningDao.findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+        if (screeningDao.findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
                 movieTitle,
                 roomName,
                 screeningTime).isEmpty()) {
@@ -56,8 +62,7 @@ public class JpaScreeningRepository implements ScreeningRepository {
                     movieProjection, roomProjection, screeningTime
                     )));
             System.out.println("Creation done!");
-        }
-        else {
+        } else {
             throw new Exception("Screening with the given parameters is already exists!");
         }
     }
@@ -66,8 +71,8 @@ public class JpaScreeningRepository implements ScreeningRepository {
     public ArrayList<Screening> getAllScreenings() {
         return screeningDao.findAll().stream()
                 .map(screeningProjection -> new Screening(
-                        MovieProjectionToMovie(screeningProjection.getScreeningCompositeKey().getMovieProjection()),
-                        RoomProjectionToRoom(screeningProjection.getScreeningCompositeKey().getRoomProjection()),
+                        movieProjectionToMovie(screeningProjection.getScreeningCompositeKey().getMovieProjection()),
+                        roomProjectionToRoom(screeningProjection.getScreeningCompositeKey().getRoomProjection()),
                         screeningProjection.getScreeningCompositeKey().getScreeningTime()))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -75,11 +80,10 @@ public class JpaScreeningRepository implements ScreeningRepository {
     @Override
     @Transactional
     public void deleteScreening(String movieTitle, String roomName, Date screeningTime) throws Exception {
-        if(screeningDao.findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+        if (screeningDao.findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
                 movieTitle, roomName, screeningTime).isEmpty()) {
             throw new Exception("Screening not found with the given parameters!");
-        }
-        else {
+        } else {
             screeningDao.deleteByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
                     movieTitle, roomName, screeningTime);
         }
@@ -89,7 +93,7 @@ public class JpaScreeningRepository implements ScreeningRepository {
         Assistance Methods below
     */
 
-    private Movie MovieProjectionToMovie(MovieProjection movieProjection) {
+    private Movie movieProjectionToMovie(MovieProjection movieProjection) {
         return new Movie(
                 movieProjection.getMovieTitle(),
                 movieProjection.getMovieGenre(),
@@ -97,7 +101,7 @@ public class JpaScreeningRepository implements ScreeningRepository {
         );
     }
 
-    private Room RoomProjectionToRoom(RoomProjection roomProjection) {
+    private Room roomProjectionToRoom(RoomProjection roomProjection) {
         return new Room(
                 roomProjection.getRoomName(),
                 roomProjection.getSeatRows(),
@@ -107,11 +111,11 @@ public class JpaScreeningRepository implements ScreeningRepository {
 
     private MovieProjection findMovieByTitle(String movieTitle) throws Exception {
         return movieDao.findByMovieTitle(movieTitle)
-                .orElseThrow(() -> new Exception("Movie not found with \""+ movieTitle +"\" title!"));
+                .orElseThrow(() -> new Exception("Movie not found with \"" + movieTitle + "\" title!"));
     }
 
     private RoomProjection findRoomByName(String roomName) throws Exception {
         return roomDao.findByRoomName(roomName)
-                .orElseThrow(() -> new Exception("Room not found with \""+ roomName +"\" name!"));
+                .orElseThrow(() -> new Exception("Room not found with \"" + roomName + "\" name!"));
     }
 }

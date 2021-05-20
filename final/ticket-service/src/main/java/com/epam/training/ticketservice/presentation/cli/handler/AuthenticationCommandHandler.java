@@ -15,7 +15,8 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
     private final SessionManager sessionManager;
     private final TokenCollector tokenCollector;
 
-    public AuthenticationCommandHandler(AuthenticationService authenticationService, SessionManager sessionManager, TokenCollector tokenCollector) {
+    public AuthenticationCommandHandler(
+            AuthenticationService authenticationService, SessionManager sessionManager, TokenCollector tokenCollector) {
         super(sessionManager, tokenCollector);
         this.authenticationService = authenticationService;
         this.sessionManager = sessionManager;
@@ -25,37 +26,27 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
 
     @ShellMethodAvailability("isUserNotSignedIn")
     @ShellMethod(value = "Signing into a privileged account", key = "sign in privileged")
-    public String signInPrivileged(String privilegedUserName, String privilegedUserPassword){
-        String result = null;
-        switch (authenticationService.signIn(privilegedUserName, privilegedUserPassword)) {
-            case 0:
-                result = "Signed in with privileged account '"+ privilegedUserName +"'";
-                break;
+    public String signInPrivileged(String privilegedUserName, String privilegedUserPassword) {
+        int result = authenticationService.signIn(privilegedUserName, privilegedUserPassword);
 
-            case -1:
-
-            case -2:
-                result = "Login failed due to incorrect credentials";
-                break;
-
-            case -3:
-                result = "User is already signed in!";
-                break;
+        if (result == 0) {
+            return "Signed in with privileged account '" + privilegedUserName + "'";
+        } else {
+            return  "Login failed due to incorrect credentials";
         }
-        return result;
     }
 
     @ShellMethod(value = "Signing out from an account", key = "sign out")
     @ShellMethodAvailability("isUserSignedIn")
-    public String signOut(){
+    public String signOut() {
         authenticationService.signOut();
-        tokenCollector.removeToken(tokenCollector.getTokens().get(tokenCollector.getTokens().size()-1));
+        tokenCollector.removeToken(tokenCollector.getTokens().get(tokenCollector.getTokens().size() - 1));
         return "You are now signed out!";
     }
 
     @ShellMethod(value = "Describes a logged in account", key = "describe account")
     @ShellMethodAvailability("isUserSignedIn")
-    public String describeAccount(){
+    public String describeAccount() {
         String userName = "admin";
         if (userName != null) {
             return "Signed in with privileged account '" + userName + "'";

@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface ScreeningDao extends JpaRepository<ScreeningProjection, ScreeningCompositeKey> {
 
-    Optional<ScreeningProjection> findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(String movieTitle, String roomName, Date screeningTime);
+    Optional<ScreeningProjection> findByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+            String movieTitle, String roomName, Date screeningTime);
 
-    void deleteByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(String movieTitle, String roomName, Date screeningTime);
+    void deleteByScreeningCompositeKey_MovieProjection_MovieTitleAndScreeningCompositeKey_RoomProjection_RoomNameAndScreeningCompositeKey_ScreeningTime(
+            String movieTitle, String roomName, Date screeningTime);
 }

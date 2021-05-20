@@ -10,7 +10,7 @@ import java.util.Date;
 @Component
 public class DateConverter {
 
-    public Date ConvertStringToDate(String date) throws Exception {
+    public Date convertStringToDate(String date) throws Exception {
         try {
             return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date);
         } catch (ParseException e) {
@@ -18,7 +18,7 @@ public class DateConverter {
         }
     }
 
-    public String ConvertDateToString(Date date) {
+    public String convertDateToString(Date date) {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date);
     }
 }

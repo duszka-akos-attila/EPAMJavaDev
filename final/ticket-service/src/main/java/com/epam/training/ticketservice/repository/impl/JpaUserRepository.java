@@ -20,7 +20,7 @@ public class JpaUserRepository implements UserRepository {
     @Override
     public User findUserByUserName(String userName) throws Exception {
         UserProjection userProjection = userDao.findByUserName(userName).orElseThrow(
-                () -> new Exception("User not found with \""+ userName +"\" username!")
+            () -> new Exception("User not found with \"" + userName + "\" username!")
         );
 
         return new User(userProjection.getUserName(),
@@ -37,8 +37,7 @@ public class JpaUserRepository implements UserRepository {
                     user.getUserPassword(),
                     user.isPrivileged()
             ));
-        }
-        else {
+        } else {
             throw new Exception("Username '" + user.getUserName() + "' is taken already!");
         }
     }

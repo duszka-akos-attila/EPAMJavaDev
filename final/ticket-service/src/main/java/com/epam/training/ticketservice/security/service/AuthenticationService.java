@@ -17,7 +17,12 @@ public class AuthenticationService {
     private final SessionManager sessionManager;
     private final TokenCollector tokenCollector;
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, SessionManager sessionManager, TokenCollector tokenCollector) {
+    public AuthenticationService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            SessionManager sessionManager,
+            TokenCollector tokenCollector) {
+
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionManager = sessionManager;
@@ -25,31 +30,28 @@ public class AuthenticationService {
     }
 
     public int signIn(String userName, String userPassword) {
-            User user;
-            UUID sessionToken = null;
-            try {
-                user = findUserByUserName(userName);
+        User user;
+        UUID sessionToken = null;
+        try {
+            user = findUserByUserName(userName);
+        } catch (Exception ignored) {
+            return -1;
+        }
+        if (passwordEncoder.matches(userPassword,user.getUserPassword())) {
+            sessionToken = sessionManager.createSession(userName, user.isPrivileged());
+            if (sessionToken != null) {
+                tokenCollector.addToken(sessionToken);
+            } else {
+                return -3;
             }
-            catch (Exception ignored)
-            {
-                return -1;
-            }
-            if (passwordEncoder.matches(userPassword,user.getUserPassword())) {
-                sessionToken = sessionManager.createSession(userName, user.isPrivileged());
-                if (sessionToken != null) {
-                    tokenCollector.addToken(sessionToken);
-                }
-                else {
-                    return -3;
-                }
 
-                return 0;
-            }
-            return -2;
+            return 0;
+        }
+        return -2;
     }
 
     public void signOut() {
-        sessionManager.killSession(tokenCollector.getTokens().get(tokenCollector.getTokens().size()-1));
+        sessionManager.killSession(tokenCollector.getTokens().get(tokenCollector.getTokens().size() - 1));
     }
 
     public User findUserByUserName(String userName) throws Exception {

@@ -19,7 +19,7 @@ public interface SessionManager {
 
     boolean isSessionAlive(UUID sessionToken);
 
-    boolean isPrivilegedSession (UUID sessionToken);
+    boolean isPrivilegedSession(UUID sessionToken);
 
     ArrayList<Session> findSessionByUserName(String userName);
 

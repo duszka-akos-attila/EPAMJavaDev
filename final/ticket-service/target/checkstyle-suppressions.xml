@@ -5,5 +5,11 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+    <suppress checks="LineLength"
+              files="ScreeningDao.java"
+              lines="12, 15"/>
 
+    <suppress checks="LineLength"
+              files="JpaScreeningRepository.java"
+              lines="55, 83, 87"/>
 </suppressions>

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public class TokenCollectorImplementation implements TokenCollector{
+public class TokenCollectorImplementation implements TokenCollector {
 
     ArrayList<UUID> tokens = new ArrayList<>();
 
@@ -22,6 +22,6 @@ public class TokenCollectorImplementation implements TokenCollector{
 
     @Override
     public void removeToken(UUID token) {
-        tokens.removeIf(lToken -> lToken == token);
+        tokens.removeIf(ltoken -> ltoken == token);
     }
 }

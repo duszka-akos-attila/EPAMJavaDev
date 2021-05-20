@@ -19,7 +19,12 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
     private final ScreeningService screeningService;
     private final DateConverter dateConverter;
 
-    public ScreeningCommandHandler(SessionManager sessionManager, TokenCollector tokenCollector, ScreeningService screeningService, DateConverter dateConverter) {
+    public ScreeningCommandHandler(
+            SessionManager sessionManager,
+            TokenCollector tokenCollector,
+            ScreeningService screeningService,
+            DateConverter dateConverter) {
+
         super(sessionManager, tokenCollector);
         this.screeningService = screeningService;
         this.dateConverter = dateConverter;
@@ -27,24 +32,22 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Creates a new screening", key = "create screening")
     @ShellMethodAvailability("isUserPrivileged")
-    public String createScreening(String movieTitle, String roomName, String screeningTime){
+    public String createScreening(String movieTitle, String roomName, String screeningTime) {
         try {
-            screeningService.createScreening(movieTitle, roomName, dateConverter.ConvertStringToDate(screeningTime));
-        }
-        catch (Exception e) {
+            screeningService.createScreening(movieTitle, roomName, dateConverter.convertStringToDate(screeningTime));
+        } catch (Exception e) {
             return e.getMessage();
         }
-        return "Created a new screening for: \""+ movieTitle +"\" at \""+ roomName +"\"!";
+        return "Created a new screening for: \"" + movieTitle + "\" at \"" + roomName + "\"!";
     }
 
     @ShellMethod(value = "Lists all screenings", key = "list screenings")
-    public String listScreenings(){
+    public String listScreenings() {
         StringBuilder screeningList = new StringBuilder();
         ArrayList<Screening> screenings = screeningService.getAllScreenings();
-        if(screenings.isEmpty()) {
+        if (screenings.isEmpty()) {
             return "There are no screenings at the moment";
-        }
-        else {
+        } else {
             for (Screening screening : screenings) {
                 screeningList.append(screening.toString()).append("\n");
             }
@@ -54,13 +57,12 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Deletes an existing screening", key = "delete screening")
     @ShellMethodAvailability("isUserPrivileged")
-    public String deleteScreening(String movieTitle, String roomName, String screeningTime){
+    public String deleteScreening(String movieTitle, String roomName, String screeningTime) {
         try {
-            screeningService.deleteScreening(movieTitle,roomName,dateConverter.ConvertStringToDate(screeningTime));
-        }
-        catch (Exception e){
+            screeningService.deleteScreening(movieTitle,roomName,dateConverter.convertStringToDate(screeningTime));
+        } catch (Exception e) {
             return e.getMessage();
         }
-        return "Deleted the the screening: \""+ movieTitle +"\" at \""+ roomName +"\"!";
+        return "Deleted the the screening: \"" + movieTitle + "\" at \"" + roomName + "\"!";
     }
 }

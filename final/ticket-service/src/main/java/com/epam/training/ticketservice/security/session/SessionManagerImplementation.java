@@ -10,24 +10,25 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public class SessionManagerImplementation implements SessionManager{
+public class SessionManagerImplementation implements SessionManager {
     private int sessionTimeInMinutes;
     private boolean autoRenewSession;
     private boolean multipleSessionsAllowed;
     private ArrayList<Session> currentSessions = new ArrayList<>();
 
-    /**
+    /** This constructor creates a new instance of a SessionManagerImplementation.
      *
      * @param sessionTimeInMinutes The time a Session can be alive in minutes. If set to less than 1,
-     * a Session is only killed, if the {@link #killSession(UUID)} method is called.
+     *      a Session is only killed, if the {@link #killSession(UUID)} method is called.
      * @param autoRenewSession If set TRUE, the Session always gets renewed,
-     * when the {@link #isSessionAlive(UUID)} method is called, by the sessionTimeInMinutes defined time is
-     * added to the time, when the {@link #isSessionAlive(UUID)} method gets called.
+     *      when the {@link #isSessionAlive(UUID)} method is called, by the sessionTimeInMinutes defined time is
+     *      added to the time, when the {@link #isSessionAlive(UUID)} method gets called.
      * @param multipleSessionsAllowed If set TRUE, one user can have multiple Sessions alive.
      */
 
-    public SessionManagerImplementation(int sessionTimeInMinutes, boolean autoRenewSession, boolean multipleSessionsAllowed) {
-        if(sessionTimeInMinutes < 0){
+    public SessionManagerImplementation(
+            int sessionTimeInMinutes, boolean autoRenewSession, boolean multipleSessionsAllowed) {
+        if (sessionTimeInMinutes < 0) {
             sessionTimeInMinutes = 0;
         }
         this.sessionTimeInMinutes = sessionTimeInMinutes;
@@ -62,14 +63,13 @@ public class SessionManagerImplementation implements SessionManager{
             Session session = new Session(userName, sessionTimeInMinutes, isSessionPrivileged);
             currentSessions.add(session);
             return session.getToken();
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     @Override
-    public void killSession(UUID sessionToken){
+    public void killSession(UUID sessionToken) {
         currentSessions.removeIf(session -> session.getToken() == sessionToken);
     }
 
@@ -92,11 +92,10 @@ public class SessionManagerImplementation implements SessionManager{
         Session session = findSessionByToken(sessionToken);
         Date now = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
 
-        if (session != null){
+        if (session != null) {
             if (sessionTimeInMinutes < 1) {
                 return true;
-            }
-            else if (now.before(session.getTimeOfDeath())) {
+            } else if (now.before(session.getTimeOfDeath())) {
                 renewSession(sessionToken);
                 return true;
             }
@@ -105,9 +104,9 @@ public class SessionManagerImplementation implements SessionManager{
     }
 
     @Override
-    public boolean isPrivilegedSession (UUID sessionToken) {
+    public boolean isPrivilegedSession(UUID sessionToken) {
         Session session = findSessionByToken(sessionToken);
-        if (session != null){
+        if (session != null) {
             return session.isPrivilegedSession();
         }
         return false;
@@ -129,11 +128,11 @@ public class SessionManagerImplementation implements SessionManager{
     }
 
     @Override
-    public Session findSessionByToken(UUID sessionToken){
+    public Session findSessionByToken(UUID sessionToken) {
         Session resultSession = null;
 
         for (Session session: currentSessions) {
-            if (session.getToken() == sessionToken){
+            if (session.getToken() == sessionToken) {
                 resultSession = session;
             }
         }
@@ -141,7 +140,7 @@ public class SessionManagerImplementation implements SessionManager{
     }
 
     private boolean canCreateNewSessionForUser(String userName) {
-        return multipleSessionsAllowed ||
-                findSessionByUserName(userName).size() < 1;
+        return multipleSessionsAllowed
+                || findSessionByUserName(userName).size() < 1;
     }
 }

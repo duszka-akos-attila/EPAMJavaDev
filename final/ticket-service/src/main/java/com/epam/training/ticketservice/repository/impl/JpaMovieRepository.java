@@ -21,15 +21,14 @@ public class JpaMovieRepository implements MovieRepository {
 
     @Override
     public void createMovie(Movie movie) throws Exception {
-        if (movieDao.findByMovieTitle(movie.getMovieTitle()).isEmpty()){
+        if (movieDao.findByMovieTitle(movie.getMovieTitle()).isEmpty()) {
             movieDao.save(new MovieProjection(
                     null,
                     movie.getMovieTitle(),
                     movie.getMovieGenre(),
                     movie.getMovieLength()
             ));
-        }
-        else {
+        } else {
             throw new Exception("Movie with title '" + movie.getMovieTitle() + "' is already exists!");
         }
     }
@@ -47,7 +46,7 @@ public class JpaMovieRepository implements MovieRepository {
     @Override
     public Movie findMovieByMovieTitle(String movieTitle) throws Exception {
         MovieProjection movieProjection = movieDao.findByMovieTitle(movieTitle).orElseThrow(
-                () -> new Exception("Movie not found with '"+ movieTitle +"' title!")
+            () -> new Exception("Movie not found with '" + movieTitle + "' title!")
         );
 
         return new Movie(
@@ -59,7 +58,7 @@ public class JpaMovieRepository implements MovieRepository {
     @Override
     public void updateMovieByMovie(Movie movie) throws Exception {
         MovieProjection movieProjection = movieDao.findByMovieTitle(movie.getMovieTitle()).orElseThrow(
-                () -> new Exception("Movie not found with '"+ movie.getMovieTitle() +"' title!")
+            () -> new Exception("Movie not found with '" + movie.getMovieTitle() + "' title!")
         );
         movieProjection.setMovieGenre(movie.getMovieGenre());
         movieProjection.setMovieLength(movie.getMovieLength());
@@ -70,9 +69,8 @@ public class JpaMovieRepository implements MovieRepository {
     @Transactional
     public void deleteMovieByMovieTitle(String movieTitle) throws Exception {
         if (movieDao.findByMovieTitle(movieTitle).isEmpty()) {
-            throw new Exception("Movie not found with '"+ movieTitle +"' title!");
-        }
-        else {
+            throw new Exception("Movie not found with '" + movieTitle + "' title!");
+        } else {
             movieDao.deleteByMovieTitle(movieTitle);
         }
     }

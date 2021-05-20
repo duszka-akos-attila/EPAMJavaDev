@@ -20,6 +20,6 @@ public class Screening {
     public String toString() {
         return movie.toString() + " screened in room "
                 + room.getRoomName() + ", at "
-                + new DateConverter().ConvertDateToString(screeningTime);
+                + new DateConverter().convertDateToString(screeningTime);
     }
 }

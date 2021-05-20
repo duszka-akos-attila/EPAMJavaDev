@@ -12,10 +12,11 @@ public class Session {
     private Date timeOfDeath;
     private final boolean privilegedSession;
 
-     Session(String userName, int sessionTimeInMinutes, boolean isSessionPrivileged) {
+    Session(String userName, int sessionTimeInMinutes, boolean isSessionPrivileged) {
         this.token = UUID.randomUUID();
         this.userName = userName;
-        this.timeOfDeath = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC).plus(Duration.ofMinutes(sessionTimeInMinutes)));
+        this.timeOfDeath = Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)
+                .plus(Duration.ofMinutes(sessionTimeInMinutes)));
         this.privilegedSession = isSessionPrivileged;
     }
 

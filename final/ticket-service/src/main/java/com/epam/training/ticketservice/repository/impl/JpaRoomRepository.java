@@ -21,16 +21,14 @@ public class JpaRoomRepository implements RoomRepository {
 
     @Override
     public void createRoom(Room room) throws Exception {
-        if (roomDao.findByRoomName(room.getRoomName()).isEmpty())
-        {
+        if (roomDao.findByRoomName(room.getRoomName()).isEmpty()) {
             roomDao.save(new RoomProjection(
                     null,
                     room.getRoomName(),
                     room.getSeatRows(),
                     room.getSeatColumns()
             ));
-        }
-        else {
+        } else {
             throw new Exception("Room with title '" + room.getRoomName() + "' is already exists!");
         }
     }
@@ -48,7 +46,7 @@ public class JpaRoomRepository implements RoomRepository {
     @Override
     public Room findRoomByRoomName(String roomName) throws Exception {
         RoomProjection roomProjection = roomDao.findByRoomName(roomName).orElseThrow(
-                () -> new Exception("Room not found with '"+ roomName +"' name!")
+            () -> new Exception("Room not found with '" + roomName + "' name!")
         );
         return new Room(
                 roomProjection.getRoomName(),
@@ -59,7 +57,7 @@ public class JpaRoomRepository implements RoomRepository {
     @Override
     public void updateRoomByRoom(Room room) throws Exception {
         RoomProjection roomProjection = roomDao.findByRoomName(room.getRoomName()).orElseThrow(
-                () -> new Exception("Room not found with \""+ room.getRoomName() +"\" name!")
+            () -> new Exception("Room not found with \"" + room.getRoomName() + "\" name!")
         );
         roomProjection.setSeatRows(room.getSeatRows());
         roomProjection.setSeatColumns(room.getSeatColumns());
@@ -70,10 +68,9 @@ public class JpaRoomRepository implements RoomRepository {
     @Override
     @Transactional
     public void deleteRoomByRoomName(String roomName) throws Exception {
-        if (roomDao.findByRoomName(roomName).isEmpty()){
-            throw new Exception("Room not found with '"+ roomName +"' name!");
-        }
-        else {
+        if (roomDao.findByRoomName(roomName).isEmpty()) {
+            throw new Exception("Room not found with '" + roomName + "' name!");
+        } else {
             roomDao.deleteByRoomName(roomName);
         }
     }

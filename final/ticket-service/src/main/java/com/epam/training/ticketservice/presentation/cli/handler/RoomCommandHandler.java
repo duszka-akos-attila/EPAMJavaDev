@@ -29,17 +29,16 @@ public class RoomCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Created a new room: \""+ roomName +"\"!";
+        return "Created a new room: \"" + roomName + "\"!";
     }
 
     @ShellMethod(value = "Lists all rooms", key = "list rooms")
-    public String listRooms(){
+    public String listRooms() {
         StringBuilder roomList = new StringBuilder();
         ArrayList<Room> rooms = roomService.getAllRooms();
-        if(rooms.isEmpty()) {
+        if (rooms.isEmpty()) {
             return "There are no rooms at the moment";
-        }
-        else {
+        } else {
             for (Room room : rooms) {
                 roomList.append(room.toString()).append("\n");
             }
@@ -49,14 +48,13 @@ public class RoomCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Updates an existing room", key = "update room")
     @ShellMethodAvailability("isUserPrivileged")
-    public String updateRoom(String roomName, int seatRows, int seatColumns){
+    public String updateRoom(String roomName, int seatRows, int seatColumns) {
         try {
             roomService.updateRoom(roomName, seatRows, seatColumns);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "Room '" + roomName + "' not found!";
         }
-        return "Updated the room: \""+ roomName +"\"!";
+        return "Updated the room: \"" + roomName + "\"!";
     }
 
     @ShellMethod(value = "Deletes an existing room", key = "delete room")
@@ -68,6 +66,6 @@ public class RoomCommandHandler extends PrivilegedCommand {
             return e.getMessage();
         }
 
-        return "Deleted the room: \""+ roomName +"\"!";
+        return "Deleted the room: \"" + roomName + "\"!";
     }
 }

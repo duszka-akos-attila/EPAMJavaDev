@@ -16,7 +16,8 @@ public class MovieCommandHandler extends PrivilegedCommand {
 
     private final MovieService movieService;
 
-    public MovieCommandHandler(SessionManager sessionManager, TokenCollector tokenCollector, MovieService movieService) {
+    public MovieCommandHandler(
+            SessionManager sessionManager, TokenCollector tokenCollector, MovieService movieService) {
         super(sessionManager, tokenCollector);
         this.movieService = movieService;
     }
@@ -33,13 +34,12 @@ public class MovieCommandHandler extends PrivilegedCommand {
     }
 
     @ShellMethod(value = "Lists all movies", key = "list movies")
-    public String listMovies(){
+    public String listMovies() {
         StringBuilder movieList = new StringBuilder();
         ArrayList<Movie> movies = movieService.getAllMovies();
-        if(movies.isEmpty()) {
+        if (movies.isEmpty()) {
             return "There are no movies at the moment";
-        }
-        else {
+        } else {
             for (Movie movie : movies) {
                 movieList.append(movie.toString()).append("\n");
             }
@@ -49,14 +49,13 @@ public class MovieCommandHandler extends PrivilegedCommand {
 
     @ShellMethod(value = "Updates an existing movie", key = "update movie")
     @ShellMethodAvailability("isUserPrivileged")
-    public String updateMovie(String movieTitle, String movieGenre, int movieLength){
+    public String updateMovie(String movieTitle, String movieGenre, int movieLength) {
         try {
             movieService.updateMovie(movieTitle,movieGenre,movieLength);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return e.getMessage();
         }
-        return "Updated the movie: \""+ movieTitle +"\"!";
+        return "Updated the movie: \"" + movieTitle + "\"!";
     }
 
     @ShellMethod(value = "Deletes an existing movie", key = "delete movie")
@@ -67,6 +66,6 @@ public class MovieCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Deleted the movie: \""+ movieTitle +"\"!";
+        return "Deleted the movie: \"" + movieTitle + "\"!";
     }
 }

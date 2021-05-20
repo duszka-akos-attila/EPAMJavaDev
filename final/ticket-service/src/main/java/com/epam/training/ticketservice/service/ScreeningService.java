@@ -15,7 +15,8 @@ public class ScreeningService {
     private final MovieRepository movieRepository;
     private final RoomRepository roomRepository;
 
-    public ScreeningService(ScreeningRepository screeningRepository, MovieRepository movieRepository, RoomRepository roomRepository) {
+    public ScreeningService(
+            ScreeningRepository screeningRepository, MovieRepository movieRepository, RoomRepository roomRepository) {
         this.screeningRepository = screeningRepository;
         this.movieRepository = movieRepository;
         this.roomRepository = roomRepository;
