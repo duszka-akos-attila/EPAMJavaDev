@@ -48,7 +48,7 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
         StringBuilder screeningList = new StringBuilder();
         ArrayList<Screening> screenings = screeningService.getAllScreenings();
         if (screenings.isEmpty()) {
-            return "There are no screenings at the moment";
+            return "There are no screenings";
         } else {
             for (Screening screening : screenings) {
                 screeningList.append(screening.toString()).append("\n");

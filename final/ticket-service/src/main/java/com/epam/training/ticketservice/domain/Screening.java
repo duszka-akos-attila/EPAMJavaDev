@@ -18,7 +18,7 @@ public class Screening {
 
     @Override
     public String toString() {
-        return movie.toString() + " screened in room "
+        return movie.toString() + ", screened in room "
                 + room.getRoomName() + ", at "
                 + new DateConverter().convertDateToString(screeningTime);
     }
