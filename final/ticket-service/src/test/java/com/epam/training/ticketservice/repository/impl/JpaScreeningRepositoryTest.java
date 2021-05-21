@@ -37,6 +37,7 @@ class JpaScreeningRepositoryTest {
 
     private final Movie movie = new Movie("TestMT1", "TestMG1", 60);
     private final Room room = new Room("TestRN1", 1, 1);
+    private final Room room2 = new Room("TestRN2", 2, 2);
     private final MovieProjection movieProjection = new MovieProjection(
             null, movie.getMovieTitle(), movie.getMovieGenre(), movie.getMovieLength());
     private final RoomProjection roomProjection = new RoomProjection(
@@ -207,5 +208,157 @@ class JpaScreeningRepositoryTest {
 
         // Then
         Mockito.verify(screeningDao, Mockito.times(0)).delete(screeningProjection);
+    }
+
+    @Test
+    void testCanCreateScreeningThrowsExceptionWhenScreeningStartsBeforeTheEndOfAnotherScreening() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-02 00:50");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        Assertions.assertThrows(Exception.class, () -> jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningThrowsExceptionWhenScreeningStartsDuringTheBreakPeriod() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-02 01:05");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        Assertions.assertThrows(Exception.class, () -> jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningThrowsExceptionWhenScreeningStartsAtTheStartOfABreakPeriod() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-02 01:00");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        Assertions.assertThrows(Exception.class, () -> jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningReturnsTrueWhenScreeningStartsAfterTheBreakPeriod() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-02 01:10");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        assertTrue(jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningThrowsExceptionWhenScreeningEndsAfterTheStartOfAnotherScreening() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-01 23:50");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        Assertions.assertThrows(Exception.class, () -> jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningThrowsExceptionWhenScreeningStartsTooLateToHaveBreakPeriod() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-02 01:05");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        Assertions.assertThrows(Exception.class, () -> jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningReturnsTrueWhenScreeningStartsAtLeastBreakPeriodInMinutesEarlierThanAnotherScreening() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-01 22:50");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        assertTrue(jpaScreeningRepository.canCreateScreening(new Screening(movie, room, screeningTime4), 10));
+
+        // Then
+    }
+
+    @Test
+    void testCanCreateScreeningReturnsTrueWhenCreatingTwoScreeningsAtTheSameTimeButInDifferentRooms() throws Exception {
+        // Given
+        Date screeningTime3 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        Date screeningTime4 = dateConverter.convertStringToDate("2000-01-02 00:00");
+        final ScreeningCompositeKey screeningCompositeKey = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime3);
+        final ScreeningCompositeKey screeningCompositeKey2 = new ScreeningCompositeKey(
+                movieProjection, roomProjection, screeningTime4);
+        Mockito.when(screeningDao.findAll())
+                .thenReturn(List.of(
+                        new ScreeningProjection(screeningCompositeKey)));
+
+        // When
+        assertTrue(jpaScreeningRepository.canCreateScreening(new Screening(movie, room2, screeningTime4), 10));
+
+        // Then
     }
 }

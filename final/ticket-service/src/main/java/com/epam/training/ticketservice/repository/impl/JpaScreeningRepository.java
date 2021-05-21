@@ -114,16 +114,6 @@ public class JpaScreeningRepository implements ScreeningRepository {
         );
     }
 
-    private MovieProjection findMovieByTitle(String movieTitle) throws Exception {
-        return movieDao.findByMovieTitle(movieTitle)
-                .orElseThrow(() -> new Exception("Movie not found with \"" + movieTitle + "\" title!"));
-    }
-
-    private RoomProjection findRoomByName(String roomName) throws Exception {
-        return roomDao.findByRoomName(roomName)
-                .orElseThrow(() -> new Exception("Room not found with \"" + roomName + "\" name!"));
-    }
-
     public Date[] getScreeningInterval(Screening screening) {
         Date screeningEnds = Date.from(screening.getScreeningTime().toInstant()
                 .plus(Duration.ofMinutes(screening.getMovie().getMovieLength())));
