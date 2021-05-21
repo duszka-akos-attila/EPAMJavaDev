@@ -16,6 +16,7 @@ import com.epam.training.ticketservice.repository.ScreeningRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -56,12 +57,13 @@ public class JpaScreeningRepository implements ScreeningRepository {
                 movieTitle,
                 roomName,
                 screeningTime).isEmpty()) {
-            System.out.println("Screening not found, creating...");
-            screeningDao.save(new ScreeningProjection(
-                    new ScreeningCompositeKey(
-                    movieProjection, roomProjection, screeningTime
-                    )));
-            System.out.println("Creation done!");
+
+            if (canCreateScreening(new Screening(
+                    movieProjectionToMovie(movieProjection), roomProjectionToRoom(roomProjection), screeningTime), 10)) {
+                screeningDao.save(new ScreeningProjection(
+                        new ScreeningCompositeKey(
+                                movieProjection, roomProjection, screeningTime)));
+            }
         } else {
             throw new Exception("Screening with the given parameters is already exists!");
         }
@@ -117,5 +119,46 @@ public class JpaScreeningRepository implements ScreeningRepository {
     private RoomProjection findRoomByName(String roomName) throws Exception {
         return roomDao.findByRoomName(roomName)
                 .orElseThrow(() -> new Exception("Room not found with \"" + roomName + "\" name!"));
+    }
+
+    public Date[] getScreeningInterval(Screening screening) {
+        Date screeningEnds = Date.from(screening.getScreeningTime().toInstant()
+                .plus(Duration.ofMinutes(screening.getMovie().getMovieLength())));
+        return new Date[]{screening.getScreeningTime(), screeningEnds};
+    }
+
+    public boolean canCreateScreening(Screening screening, int breakPeriodInMinutes) throws Exception {
+        ArrayList<Screening> screenings = getAllScreenings();
+
+        for (Screening screeningFromList : screenings) {
+            Date[] screeningInterval = getScreeningInterval(screeningFromList);
+            Date[] breakPeriod = getBreakPeriod(screeningFromList, breakPeriodInMinutes);
+
+            if (screeningFromList.getRoom().getRoomName().equals(screening.getRoom().getRoomName())) {
+
+                if ((getScreeningInterval(screening)[0].before(screeningInterval[1])
+                        && getScreeningInterval(screening)[0].after(screeningInterval[0]))
+                        || (getScreeningInterval(screening)[1].before(screeningInterval[1])
+                        && getScreeningInterval(screening)[1].after(screeningInterval[0]))) {
+                    throw new Exception("There is an overlapping screening");
+                }
+
+                if ((getScreeningInterval(screening)[0].equals(breakPeriod[0])
+                        ||getScreeningInterval(screening)[0].before(breakPeriod[1])
+                        && getScreeningInterval(screening)[0].after(breakPeriod[0]))
+                        || (getBreakPeriod(screening,breakPeriodInMinutes)[0].before(screeningInterval[1])
+                        && getBreakPeriod(screening,breakPeriodInMinutes)[1].after(screeningInterval[0]))) {
+                    throw new Exception("This would start in the break period after another screening in this room");
+                }
+            }
+        }
+        return true;
+    }
+
+    public Date[] getBreakPeriod(Screening screening, int breakPeriodInMinutes) {
+        Date startOfBreak = getScreeningInterval(screening)[1];
+        Date endOfBreak = Date.from(getScreeningInterval(screening)[1].toInstant()
+                .plus(Duration.ofMinutes(breakPeriodInMinutes)));
+        return new Date[]{startOfBreak, endOfBreak};
     }
 }
