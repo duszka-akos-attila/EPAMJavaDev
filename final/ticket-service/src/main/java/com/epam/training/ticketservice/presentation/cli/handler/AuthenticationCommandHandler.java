@@ -45,13 +45,22 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
     }
 
     @ShellMethod(value = "Describes a logged in account", key = "describe account")
-    @ShellMethodAvailability("isUserSignedIn")
     public String describeAccount() {
-        String userName = "admin";
-        if (userName != null) {
-            return "Signed in with privileged account '" + userName + "'";
-        }
 
-        return "You are not signed in";
+        if (tokenCollector.getTokens().isEmpty()) {
+            return "You are not signed in";
+        } else {
+            String userName = sessionManager.getSessionUsername(
+                    tokenCollector.getTokens().get(tokenCollector.getTokens().size() - 1));
+
+            boolean isSessionPrivileged = sessionManager.isPrivilegedSession(
+                    tokenCollector.getTokens().get(tokenCollector.getTokens().size() - 1));
+
+            if (isSessionPrivileged) {
+                return "Signed in with privileged account '" + userName + "'";
+            } else {
+                return "Signed in with account '" + userName + "'";
+            }
+        }
     }
 }

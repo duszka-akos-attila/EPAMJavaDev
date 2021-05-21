@@ -24,4 +24,6 @@ public interface SessionManager {
     ArrayList<Session> findSessionByUserName(String userName);
 
     Session findSessionByToken(UUID sessionToken);
+
+    String getSessionUsername(UUID sessionToken);
 }

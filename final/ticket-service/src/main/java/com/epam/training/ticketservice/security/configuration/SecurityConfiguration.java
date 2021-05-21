@@ -22,6 +22,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SessionManagerImplementation sessionManager() {
-        return new SessionManagerImplementation(5,true,false);
+        return new SessionManagerImplementation(0,true,false);
     }
 }

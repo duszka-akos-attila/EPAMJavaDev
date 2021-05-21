@@ -59,7 +59,10 @@ public class JpaScreeningRepository implements ScreeningRepository {
                 screeningTime).isEmpty()) {
 
             if (canCreateScreening(new Screening(
-                    movieProjectionToMovie(movieProjection), roomProjectionToRoom(roomProjection), screeningTime), 10)) {
+                    movieProjectionToMovie(movieProjection),
+                    roomProjectionToRoom(roomProjection),
+                    screeningTime), 10)) {
+
                 screeningDao.save(new ScreeningProjection(
                         new ScreeningCompositeKey(
                                 movieProjection, roomProjection, screeningTime)));
@@ -144,7 +147,7 @@ public class JpaScreeningRepository implements ScreeningRepository {
                 }
 
                 if ((getScreeningInterval(screening)[0].equals(breakPeriod[0])
-                        ||getScreeningInterval(screening)[0].before(breakPeriod[1])
+                        || getScreeningInterval(screening)[0].before(breakPeriod[1])
                         && getScreeningInterval(screening)[0].after(breakPeriod[0]))
                         || (getBreakPeriod(screening,breakPeriodInMinutes)[0].before(screeningInterval[1])
                         && getBreakPeriod(screening,breakPeriodInMinutes)[1].after(screeningInterval[0]))) {

@@ -11,5 +11,5 @@
 
     <suppress checks="LineLength"
               files="JpaScreeningRepository.java"
-              lines="56, 85, 89"/>
+              lines="56, 88, 92"/>
 </suppressions>

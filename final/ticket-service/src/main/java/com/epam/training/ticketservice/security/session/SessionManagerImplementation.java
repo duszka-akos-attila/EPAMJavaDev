@@ -139,6 +139,11 @@ public class SessionManagerImplementation implements SessionManager {
         return resultSession;
     }
 
+    @Override
+    public String getSessionUsername(UUID sessionToken) {
+        return findSessionByToken(sessionToken).getUserName();
+    }
+
     private boolean canCreateNewSessionForUser(String userName) {
         return multipleSessionsAllowed
                 || findSessionByUserName(userName).size() < 1;
