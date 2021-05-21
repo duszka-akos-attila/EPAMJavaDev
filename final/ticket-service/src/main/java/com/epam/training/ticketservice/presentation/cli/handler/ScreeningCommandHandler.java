@@ -38,7 +38,9 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Created a new screening for: \"" + movieTitle + "\" at \"" + roomName + "\"!";
+
+        // return "Created a new screening for: \"" + movieTitle + "\" at \"" + roomName + "\"!";
+        return null;
     }
 
     @ShellMethod(value = "Lists all screenings", key = "list screenings")
@@ -63,6 +65,7 @@ public class ScreeningCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Deleted the the screening: \"" + movieTitle + "\" at \"" + roomName + "\"!";
+        // return "Deleted the the screening: \"" + movieTitle + "\" at \"" + roomName + "\"!";
+        return null;
     }
 }

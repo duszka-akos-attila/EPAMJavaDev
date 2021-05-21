@@ -30,7 +30,9 @@ public class MovieCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Movie " + movieTitle + " is successfully created!";
+
+        // return "Movie " + movieTitle + " is successfully created!";
+        return null;
     }
 
     @ShellMethod(value = "Lists all movies", key = "list movies")
@@ -55,7 +57,9 @@ public class MovieCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Updated the movie: \"" + movieTitle + "\"!";
+
+        // return "Updated the movie: \"" + movieTitle + "\"!";
+        return null;
     }
 
     @ShellMethod(value = "Deletes an existing movie", key = "delete movie")
@@ -66,6 +70,8 @@ public class MovieCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Deleted the movie: \"" + movieTitle + "\"!";
+
+        // return "Deleted the movie: \"" + movieTitle + "\"!";
+        return null;
     }
 }

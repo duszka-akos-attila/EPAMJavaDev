@@ -29,7 +29,9 @@ public class RoomCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Created a new room: \"" + roomName + "\"!";
+
+        // return "Created a new room: \"" + roomName + "\"!";
+        return null;
     }
 
     @ShellMethod(value = "Lists all rooms", key = "list rooms")
@@ -54,7 +56,9 @@ public class RoomCommandHandler extends PrivilegedCommand {
         } catch (Exception e) {
             return "Room '" + roomName + "' not found!";
         }
-        return "Updated the room: \"" + roomName + "\"!";
+
+        // return "Updated the room: \"" + roomName + "\"!";
+        return null;
     }
 
     @ShellMethod(value = "Deletes an existing room", key = "delete room")
@@ -66,6 +70,7 @@ public class RoomCommandHandler extends PrivilegedCommand {
             return e.getMessage();
         }
 
-        return "Deleted the room: \"" + roomName + "\"!";
+        // return "Deleted the room: \"" + roomName + "\"!";
+        return null;
     }
 }

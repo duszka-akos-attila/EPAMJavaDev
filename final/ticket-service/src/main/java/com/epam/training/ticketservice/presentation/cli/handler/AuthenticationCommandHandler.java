@@ -29,11 +29,10 @@ public class AuthenticationCommandHandler extends PrivilegedCommand {
     public String signInPrivileged(String privilegedUserName, String privilegedUserPassword) {
         int result = authenticationService.signIn(privilegedUserName, privilegedUserPassword);
 
-        if (result == 0) {
-            return "Signed in with privileged account '" + privilegedUserName + "'";
-        } else {
+        if (result != 0) {
             return  "Login failed due to incorrect credentials";
         }
+        return null;
     }
 
     @ShellMethod(value = "Signing out from an account", key = "sign out")
